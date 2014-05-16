@@ -30,6 +30,8 @@ et.on(['google', 'bing'], function (edata) {
 
 ### normal usage
 
+`et.on(eventName, function (edata) {})`
+
 ```js
 it('should work with one event', function (done) {
   var et = new Eventr();
@@ -42,6 +44,8 @@ it('should work with one event', function (done) {
 ```
 
 ### event array
+
+`et.on([eventName1, eventName2, ..], function (edata) {}`
 
 ```js
 it('should work with event array', function (done) {
@@ -89,7 +93,12 @@ it('should work in order', function (done) {
 });
 ```
 
-### #emitNow
+### #emit and #emitNow
+
+```js
+et.emit('google', 'Im feeling lucky')
+et.emitNow('google', 'Im feeling lucky')
+```
 
 when you call `et.emit('sth', data)`, the `sth` event would trigger in process.nextTick.
 If you want it emit as soon as possible, call `et.emitNow('sth', data)`.
@@ -98,19 +107,6 @@ If you want it emit as soon as possible, call `et.emitNow('sth', data)`.
 
 `#done` would handle callback `err` for you.
 
-```js
-it('should work with event array', function (done) {
-  var et = new Eventr();
-  et.err(done);
-  fetchurl('google', et.done('page1'));
-  fetchurl('yahoo', et.done('page2'));
-  et.on(['page1', 'page2'], function (edata) {
-    edata.page1.should.equal('pagecontentgoogle');
-    edata.page2.should.equal('pagecontentyahoo');
-    done();
-  });
-});
-```
 
 `#done` has three forms. each from return a `function (err, data)`.
 
@@ -125,6 +121,20 @@ et.done() // only handle err, you should emit manually
 ```js
 et.err(errHandler) // errHandler is a function, et.done would use it.
 et.err(err) // err is a JS Error. et use errHandler to handle it
+```
+
+```js
+it('should work with event array', function (done) {
+  var et = new Eventr();
+  et.err(done);
+  fetchurl('google', et.done('page1'));
+  fetchurl('yahoo', et.done('page2'));
+  et.on(['page1', 'page2'], function (edata) {
+    edata.page1.should.equal('pagecontentgoogle');
+    edata.page2.should.equal('pagecontentyahoo');
+    done();
+  });
+});
 ```
 
 ### methods delegate to async.js (https://github.com/caolan/async)
