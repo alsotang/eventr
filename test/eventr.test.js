@@ -8,6 +8,12 @@ var fetchurl = function (url, callback) {
   }, 5);
 };
 
+var fetchurlErr = function (url, callback) {
+  setTimeout(function () {
+    callback(new Error('404 status'));
+  }, 5);
+};
+
 describe('eventr.js', function () {
 
   describe('`emit`', function () {
@@ -92,4 +98,56 @@ describe('eventr.js', function () {
     });
   });
 
+  describe('`done`', function () {
+    it('should work with `done()`', function (done) {
+      var et = new Eventr();
+      fetchurl('1', et.done(function (content) {
+        et.emit('page1', content);
+      }));
+      et.on('page1', function (edata) {
+        edata.should.equal('pagecontent1');
+        done();
+      });
+    });
+
+    it('should work with `done(eventName)`', function (done) {
+      var et = new Eventr();
+      fetchurl('1', et.done('page1'));
+      et.on('page1', function (edata) {
+        edata.should.equal('pagecontent1');
+        done();
+      });
+    });
+
+    it('should work with `done(eventName, thenFn)`', function (done) {
+      var et = new Eventr();
+      fetchurl('1', et.done('page1', function (data) {
+        return data + 'then';
+      }));
+      et.on('page1', function (edata) {
+        edata.should.equal('pagecontent1then');
+        done();
+      });
+    });
+  });
+
+  describe('`err`', function () {
+    it('should `err(errHandler)`', function (done) {
+      function errHandler(err) {}
+      var et = new Eventr();
+      et.err(errHandler);
+      et._errFn.should.equal(errHandler);
+      done();
+    });
+
+    it('should `err(err)`', function (done) {
+      function errHandler(err) {
+        err.should.Error;
+        done();
+      }
+      var et = new Eventr();
+      et.err(errHandler);
+      fetchurlErr('google', et.done());
+    });
+  });
 });
