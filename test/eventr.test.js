@@ -35,15 +35,15 @@ describe('eventr.js', function () {
 
     it('should work with event array', function (done) {
       var et = new Eventr();
-      fetchurl('1', function (err, content) {
+      fetchurl('google', function (err, content) {
         et.emit('page1', content);
       });
-      fetchurl('2', function (err, content) {
+      fetchurl('yahoo', function (err, content) {
         et.emit('page2', content);
       });
       et.on(['page1', 'page2'], function (edata) {
-        edata.page1.should.equal('pagecontent1');
-        edata.page2.should.equal('pagecontent2');
+        edata.page1.should.equal('pagecontentgoogle');
+        edata.page2.should.equal('pagecontentyahoo');
         done();
       });
     });
