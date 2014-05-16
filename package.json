@@ -10,6 +10,7 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^1.18.2",
+    "pedding": "0.0.3",
     "should": "^3.3.1"
   }
 }
