@@ -79,12 +79,15 @@ describe('eventr.js', function () {
         et.emit('file2', content);
       });
       et.on(['file1', 'file2'], function (edata) {
-        et.emit('file3', edata);
+        fetchurl('file3', et.done(function (content) {
+          edata.file3 = content;
+          et.emit('allfile', edata);
+        }));
       });
-      et.on('file3', function (edata) {
+      et.on('allfile', function (edata) {
         // concat file1 and file2
-        var content = edata.file1 + edata.file2;
-        content.should.equal('pagecontentfile1pagecontentfile2');
+        var content = edata.file1 + edata.file2 + edata.file3;
+        content.should.equal('pagecontentfile1pagecontentfile2pagecontentfile3');
         done();
       });
     });
@@ -135,6 +138,18 @@ describe('eventr.js', function () {
         done();
       });
     });
+
+    it('should work with event array', function (done) {
+      var et = new Eventr();
+      et.err(done);
+      fetchurl('google', et.done('page1'));
+      fetchurl('yahoo', et.done('page2'));
+      et.on(['page1', 'page2'], function (edata) {
+        edata.page1.should.equal('pagecontentgoogle');
+        edata.page2.should.equal('pagecontentyahoo');
+        done();
+      });
+    });
   });
 
   describe('`err`', function () {
@@ -147,6 +162,18 @@ describe('eventr.js', function () {
     });
 
     it('should `err(err)`', function (done) {
+      function errHandler(err) {
+        err.should.Error;
+        done();
+      }
+      var et = new Eventr();
+      et.err(errHandler);
+      fetchurlErr('google', function (err, content) {
+        et.err(err);
+      });
+    });
+
+    it('should work with `done`', function (done) {
       function errHandler(err) {
         err.should.Error;
         done();
