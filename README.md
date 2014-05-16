@@ -2,8 +2,31 @@
 
 [![Build Status](https://travis-ci.org/alsotang/eventr.svg?branch=master)](https://travis-ci.org/alsotang/eventr)
 
+## install
+
+`npm install eventr`
+
+## quick example
+
+```js
+var Eventr = require('../');
+var et = new Eventr();
+et.emit('google', '!!!');
+et.emit('bing', '???');
+et.on(['google', 'bing'], function (edata) {
+  console.log(edata.google); // => !!!
+  console.log(edata.bing); // => ???
+});
+```
 
 ## usage
+
+* [`normal usage`](#normal-usage)
+* [`event array`](#event-array)
+* [`chain two listeners`](#chain-two-listeners)
+* [`#emitNow`](#emitnow)
+* [`#done and #err`](#done-and-err)
+* [`methods delegate to async.js`](#methods-delegate-to-asyncjs-httpsgithubcomcaolanasync)
 
 ### normal usage
 

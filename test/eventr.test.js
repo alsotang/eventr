@@ -222,4 +222,16 @@ describe('eventr.js', function () {
         });
     });
   });
+
+  it('quick example', function (done) {
+    var Eventr = require('../');
+    var et = new Eventr();
+    et.emit('google', '!');
+    et.emit('bing', '?');
+    et.on(['google', 'bing'], function (edata) {
+      edata.google.should.equal('!');
+      edata.bing.should.equal('?');
+      done();
+    });
+  });
 });
