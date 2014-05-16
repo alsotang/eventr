@@ -1,17 +1,23 @@
 var Eventr = require('../');
 var pedding = require('pedding');
 
+var getRandom = function () {
+  var result = Math.random() * 10;
+  result = ~~result;
+  return result;
+};
+
 var fetchurl = function (url, callback) {
   var page = 'pagecontent' + url;
   setTimeout(function () {
     callback(null, page);
-  }, 5);
+  }, getRandom());
 };
 
 var fetchurlErr = function (url, callback) {
   setTimeout(function () {
     callback(new Error('404 status'));
-  }, 5);
+  }, getRandom());
 };
 
 describe('eventr.js', function () {
