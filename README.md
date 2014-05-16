@@ -9,7 +9,7 @@
 ## quick example
 
 ```js
-var Eventr = require('../');
+var Eventr = require('eventr');
 var et = new Eventr();
 et.emit('google', '!!!');
 et.emit('bing', '???');
