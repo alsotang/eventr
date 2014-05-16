@@ -16,7 +16,7 @@
   "keywords": [
     "async",
     "event",
-    "flow control",
+    "flow control"
   ],
   "repository": "https://github.com/alsotang/eventr.git",
   "dependencies": {
