@@ -156,4 +156,43 @@ describe('eventr.js', function () {
       fetchurlErr('google', et.done());
     });
   });
+
+  describe('delegate to `async`', function () {
+    it('should work with `Eventr.map`', function (done) {
+      Eventr.map(['url1', 'url2', 'url3', 'url4'],
+        function (item, callback) {
+          fetchurl(item, callback);
+        },
+        function (err, results) {
+          if (err) {
+            return done(err);
+          }
+          results.should.eql([
+            "pagecontenturl1",
+            "pagecontenturl2",
+            "pagecontenturl3",
+            "pagecontenturl4"
+          ]);
+          done();
+        });
+    });
+
+    it('should `et.map`', function (done) {
+      var et = new Eventr();
+      et.map(['url1', 'url2', 'url3', 'url4'],
+        fetchurl,
+        function (err, results) {
+          if (err) {
+            return done(err);
+          }
+          results.should.eql([
+            "pagecontenturl1",
+            "pagecontenturl2",
+            "pagecontenturl3",
+            "pagecontenturl4"
+          ]);
+          done();
+        });
+    });
+  });
 });
