@@ -36,6 +36,7 @@ et.on(['google', 'bing'], function (edata) {
 it('should work with one event', function (done) {
   var et = new Eventr();
   et.emit('hello', 'ok');
+  // edata is what you emit
   et.on('hello', function (edata) {
     edata.should.equal('ok');
     done();
@@ -56,6 +57,7 @@ it('should work with event array', function (done) {
   fetchurl('yahoo', function (err, content) {
     et.emit('page2', content);
   });
+  // edata is a hash
   et.on(['page1', 'page2'], function (edata) {
     edata.page1.should.equal('pagecontentgoogle');
     edata.page2.should.equal('pagecontentyahoo');
@@ -85,7 +87,7 @@ it('should work in order', function (done) {
   });
 
   et.on('allfile', function (edata) {
-    // concat file1 and file2
+    // concat file1 and file2 and file3
     var content = edata.file1 + edata.file2 + edata.file3;
     content.should.equal('pagecontentfile1pagecontentfile2pagecontentfile3');
     done();
@@ -113,7 +115,7 @@ If you want it emit as soon as possible, call `et.emitNow('sth', data)`.
 ```js
 et.done(eventName) // handle err, and auto `emit(eventName, data)`
 et.done(eventName, thenFn) // handle err, and auto `emit(eventName, thenFn(data))`
-et.done() // only handle err, you should emit manually
+et.done(callback) // only handle err, you should emit manually. `callback(data)` only receive data.
 ```
 
 `#err` has two form.
