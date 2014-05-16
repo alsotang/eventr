@@ -2,6 +2,6 @@
 
 ## TODO
 
-[ ] browser support
-[ ] UMD support
-[ ] browser unit test
+- [ ] browser support
+- [ ] UMD support
+- [ ] browser unit test

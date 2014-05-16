@@ -1,7 +1,7 @@
 {
   "name": "eventr",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "A solution to async flow control",
   "main": "index.js",
   "scripts": {
     "test": "make test"
@@ -13,6 +13,12 @@
     "pedding": "0.0.3",
     "should": "^3.3.1"
   },
+  "keywords": [
+    "async",
+    "event",
+    "flow control",
+  ],
+  "repository": "https://github.com/alsotang/eventr.git",
   "dependencies": {
     "async": "^0.8.0"
   }
