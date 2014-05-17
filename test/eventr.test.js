@@ -50,6 +50,22 @@ describe('eventr.js', function () {
       });
       et.emit('data', null);
     });
+
+    it('should support `total`', function (done) {
+      var datas = [1, 2, 3, 4, 5];
+      var et = new Eventr();
+      et.on('doc', datas.length, function (docs) {
+        docs.should.length(5);
+        done();
+      });
+      datas.forEach(function (d) {
+        setTimeout(function () {
+          et.emit('doc', d);
+        }, getRandom());
+      });
+    });
+
+    it('should support `total` and ensure order');
   });
 
   describe('`emit`', function () {
