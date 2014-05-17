@@ -23,7 +23,7 @@ et.on(['google', 'bing'], function (edata) {
 
 * [`normal usage`](#normal-usage)
 * [`event array`](#event-array)
-* [`chain two listeners`](#chain-two-listeners)
+* [`chain multi listeners`](#chain-multi-listeners)
 * [`#emitNow`](#emitnow)
 * [`#done and #err`](#done-and-err)
 * [`methods delegate to async.js`](#methods-delegate-to-asyncjs-httpsgithubcomcaolanasync)
@@ -66,7 +66,7 @@ it('should work with event array', function (done) {
 });
 ```
 
-### chain two listeners
+### chain multi listeners
 
 ```js
 it('should work in order', function (done) {
@@ -102,7 +102,7 @@ et.emit('google', 'Im feeling lucky')
 et.emitNow('google', 'Im feeling lucky')
 ```
 
-when you call `et.emit('sth', data)`, the `sth` event would trigger in process.nextTick.
+when you call `et.emit('sth', data)`, the `sth` event would trigger in `process.nextTick`.
 If you want it emit as soon as possible, call `et.emitNow('sth', data)`.
 
 ### #done and #err
@@ -110,7 +110,7 @@ If you want it emit as soon as possible, call `et.emitNow('sth', data)`.
 `#done` would handle callback `err` for you.
 
 
-`#done` has three forms. each from return a `function (err, data)`.
+`#done` has three forms. each form return a `function (err, data)`.
 
 ```js
 et.done(eventName) // handle err, and auto `emit(eventName, data)`
@@ -141,6 +141,5 @@ it('should work with event array', function (done) {
 
 ## TODO
 
-- [ ] browser support
-- [ ] UMD support
+- [ ] browser UMD support
 - [ ] browser unit test
