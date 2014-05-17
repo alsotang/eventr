@@ -139,39 +139,6 @@ it('should work with event array', function (done) {
 });
 ```
 
-### methods delegate to async.js (https://github.com/caolan/async)
-Eventr delegate all these *collection methods* to async.js.
-so you can use them like use async.js
-
-```js
-[
-  'each', 'eachSeries', 'eachLimit',
-  'map', 'mapSeries', 'mapLimit',
-  'filter', 'filterSeries',
-  'reject', 'rejectSeries',
-  'reduce', 'reduceRight',
-  'detect', 'detectSeries',
-  'sortBy', 'some',
-  'every',
-  'concat', 'concatSeries',
-]
-```
-
-```js
-var Eventr = require("Eventr");
-Eventr.map(['file1','file2','file3'], fs.stat, function(err, results){
-    // results is now an array of stats for each file
-});
-
-// or
-
-var ep = new Eventr();
-ep.map(['file1','file2','file3'], fs.stat, function(err, results){
-    // results is now an array of stats for each file
-});
-
-```
-
 ## TODO
 
 - [ ] browser support
