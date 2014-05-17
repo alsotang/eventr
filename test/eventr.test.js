@@ -65,7 +65,52 @@ describe('eventr.js', function () {
       });
     });
 
-    it('should support `total` and ensure order');
+    it('should ensure `emit` order', function (done) {
+      var et = new Eventr();
+      et.on('doc', 5, function (docs) {
+        docs.should.eql([1, 4, 9, 16, 25]);
+        done();
+      });
+
+      var datas = [1, 2, 3, 4, 5];
+      datas.forEach(function (d, idx) {
+        setTimeout(function () {
+          et.emit('doc', d * d, idx);
+        }, 5 - d);
+      });
+    });
+
+    it('should ensure `done` order', function (done) {
+      var datas = [1, 2, 3, 4, 5];
+      var et = new Eventr();
+      et.on('doc', datas.length, function (docs) {
+        docs.should.eql(datas);
+        done();
+      });
+      datas.forEach(function (d, idx) {
+        var _done = et.done('doc', idx);
+        setTimeout(function () {
+          _done(null, d);
+        }, 5 - d);
+      });
+    });
+
+    it('should ensure `done` order and trasform data', function (done) {
+      var datas = [1, 2, 3, 4, 5];
+      var et = new Eventr();
+      et.on('doc', datas.length, function (docs) {
+        docs.should.eql([1, 4, 9, 16, 25]);
+        done();
+      });
+      datas.forEach(function (d, idx) {
+        var _done = et.done('doc', function (d) {
+          return d * d;
+        }, idx);
+        setTimeout(function () {
+          _done(null, d);
+        }, 5 - d);
+      });
+    });
   });
 
   describe('`emit`', function () {
@@ -123,6 +168,20 @@ describe('eventr.js', function () {
       });
     });
 
+    it('should support multi emit', function (done) {
+      var et = new Eventr();
+      var datas = [1, 2, 3, 4, 5];
+      var count = 0;
+      done = pedding(5, done);
+      et.on('data', function (data) {
+        data.should.equal(datas[count++]);
+        done();
+      });
+      datas.forEach(function (d) {
+        et.emit('data', d);
+      });
+    });
+
   });
 
   describe('`emitNow`', function () {
@@ -136,6 +195,20 @@ describe('eventr.js', function () {
         done();
       });
       et.emitNow('hello', 'ok2');
+    });
+
+    it('should support multi emitNow', function (done) {
+      var et = new Eventr();
+      var datas = [1, 2, 3, 4, 5];
+      var count = 0;
+      done = pedding(5, done);
+      et.on('data', function (data) {
+        data.should.equal(datas[count++]);
+        done();
+      });
+      datas.forEach(function (d) {
+        et.emitNow('data', d);
+      });
     });
   });
 
@@ -183,7 +256,7 @@ describe('eventr.js', function () {
       });
     });
 
-    it('should support multi emitNow', function (done) {
+    it('should support multi `done`', function (done) {
       var et = new Eventr();
       var datas = [1, 2, 3, 4, 5];
       var count = 0;
@@ -193,7 +266,7 @@ describe('eventr.js', function () {
         done();
       });
       datas.forEach(function (d) {
-        et.emitNow('data', d);
+        et.done('data')(null, d);
       });
     });
 

@@ -24,6 +24,7 @@ et.on(['google', 'bing'], function (edata) {
 * [`normal usage`](#normal-usage)
 * [`event array`](#event-array)
 * [`chain multi listeners`](#chain-multi-listeners)
+* [`map array to another`](#map-array-to-another)
 * [`#emitNow`](#emitnow)
 * [`#done and #err`](#done-and-err)
 * [`methods delegate to async.js`](#methods-delegate-to-asyncjs-httpsgithubcomcaolanasync)
@@ -91,6 +92,29 @@ it('should work in order', function (done) {
     var content = edata.file1 + edata.file2 + edata.file3;
     content.should.equal('pagecontentfile1pagecontentfile2pagecontentfile3');
     done();
+  });
+});
+```
+
+### map array to another
+
+- `on(eventName, total, function (dataArr) {})`
+- `emit(eventName, data, index)`
+- `done(eventName, index)`
+
+```js
+it('should ensure `emit` order', function (done) {
+  var et = new Eventr();
+  et.on('doc', 5, function (docs) {
+    docs.should.eql([1, 4, 9, 16, 25]);
+    done();
+  });
+
+  var datas = [1, 2, 3, 4, 5];
+  datas.forEach(function (d, idx) {
+    setTimeout(function () {
+      et.emit('doc', d * d, idx);
+    }, 5 - d);
   });
 });
 ```
