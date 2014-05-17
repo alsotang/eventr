@@ -22,18 +22,9 @@ var fetchurlErr = function (url, callback) {
 
 describe('eventr.js', function () {
 
-  describe('`emit`', function () {
+  describe('`on`', function () {
 
-    it('should work with one event', function (done) {
-      var et = new Eventr();
-      et.emit('hello', 'ok');
-      et.on('hello', function (edata) {
-        edata.should.equal('ok');
-        done();
-      });
-    });
-
-    it('should work with event array', function (done) {
+    it('should support event array', function (done) {
       var et = new Eventr();
       fetchurl('google', function (err, content) {
         et.emit('page1', content);
@@ -44,6 +35,30 @@ describe('eventr.js', function () {
       et.on(['page1', 'page2'], function (edata) {
         edata.page1.should.equal('pagecontentgoogle');
         edata.page2.should.equal('pagecontentyahoo');
+        done();
+      });
+    });
+
+    it('should support multi `on`', function (done) {
+      done = pedding(2, done);
+      var et = new Eventr();
+      et.on('data', function (data) {
+        done();
+      });
+      et.on('data', function (data) {
+        done();
+      });
+      et.emit('data', null);
+    });
+  });
+
+  describe('`emit`', function () {
+
+    it('should work with one event', function (done) {
+      var et = new Eventr();
+      et.emit('hello', 'ok');
+      et.on('hello', function (edata) {
+        edata.should.equal('ok');
         done();
       });
     });
@@ -91,6 +106,7 @@ describe('eventr.js', function () {
         done();
       });
     });
+
   });
 
   describe('`emitNow`', function () {
@@ -150,6 +166,21 @@ describe('eventr.js', function () {
         done();
       });
     });
+
+    it('should support multi emitNow', function (done) {
+      var et = new Eventr();
+      var datas = [1, 2, 3, 4, 5];
+      var count = 0;
+      done = pedding(5, done);
+      et.on('data', function (data) {
+        data.should.equal(datas[count++]);
+        done();
+      });
+      datas.forEach(function (d) {
+        et.emitNow('data', d);
+      });
+    });
+
   });
 
   describe('`err`', function () {
