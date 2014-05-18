@@ -39,6 +39,23 @@ describe('eventr.js', function () {
       });
     });
 
+    it('should support event array with multi emit', function (done) {
+      var et = new Eventr();
+      done = pedding(2, done);
+      var urls = [['google', 'yahoo'], ['baidu', 'sina']];
+      var count = 0;
+      et.on(['page1', 'page2'], function (edata) {
+        edata.page1.should.equal(urls[count][0] + 'content');
+        edata.page2.should.equal(urls[count][1] + 'content');
+        count++;
+        done();
+      });
+      urls.forEach(function (uarr) {
+        et.emitNow('page1', uarr[0] + 'content');
+        et.emitNow('page2', uarr[1] + 'content');
+      });
+    });
+
     it('should support multi `on`', function (done) {
       done = pedding(2, done);
       var et = new Eventr();
@@ -62,6 +79,15 @@ describe('eventr.js', function () {
         setTimeout(function () {
           et.emit('doc', d);
         }, getRandom());
+      });
+    });
+
+    it('should return [] when total < 1', function (done) {
+      var et = new Eventr();
+      var datas = [];
+      et.on('doc', datas.length, function (docs) {
+        docs.should.length(0);
+        done();
       });
     });
 
@@ -146,7 +172,7 @@ describe('eventr.js', function () {
       });
     });
 
-    it('should work in order', function (done) {
+    it('should work in sequence', function (done) {
       var et = new Eventr();
       fetchurl('file1', function (err, content) {
         et.emit('file1', content);
@@ -197,6 +223,12 @@ describe('eventr.js', function () {
       et.emitNow('hello', 'ok2');
     });
 
+    it('should not throw error when no listener', function (done) {
+      var et = new Eventr();
+      et.emitNow('nonexist', 'gogo');
+      done();
+    });
+
     it('should support multi emitNow', function (done) {
       var et = new Eventr();
       var datas = [1, 2, 3, 4, 5];
@@ -213,7 +245,7 @@ describe('eventr.js', function () {
   });
 
   describe('`done`', function () {
-    it('should work with `done()`', function (done) {
+    it('should work with `done(fn)`', function (done) {
       var et = new Eventr();
       fetchurl('1', et.done(function (content) {
         et.emit('page1', content);
