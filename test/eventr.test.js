@@ -334,6 +334,15 @@ describe('eventr.js', function () {
       et.err(errHandler);
       fetchurlErr('google', et.done());
     });
+
+    it('should nothing happens', function (done) {
+      var et = new Eventr();
+      fetchurlErr('google', et.done());
+      // 上面那句不抛错就对了
+      setTimeout(function () {
+        done();
+      }, 20);
+    });
   });
 
   it('quick example', function (done) {
