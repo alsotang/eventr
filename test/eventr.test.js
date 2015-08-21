@@ -1,4 +1,4 @@
-var Eventr = require('../');
+var eventr = require('../');
 var pedding = require('pedding');
 
 var getRandom = function () {
@@ -25,7 +25,7 @@ describe('eventr.js', function () {
   describe('`on`', function () {
 
     it('should support event array', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurl('google', function (err, content) {
         et.emit('page1', content);
       });
@@ -40,7 +40,7 @@ describe('eventr.js', function () {
     });
 
     it('should support event array with multi emit', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       done = pedding(2, done);
       var urls = [['google', 'yahoo'], ['baidu', 'sina']];
       var count = 0;
@@ -58,7 +58,7 @@ describe('eventr.js', function () {
 
     it('should support multi `on`', function (done) {
       done = pedding(2, done);
-      var et = new Eventr();
+      var et = new eventr();
       et.on('data', function (data) {
         done();
       });
@@ -70,7 +70,7 @@ describe('eventr.js', function () {
 
     it('should support `total`', function (done) {
       var datas = [1, 2, 3, 4, 5];
-      var et = new Eventr();
+      var et = new eventr();
       et.on('doc', datas.length, function (docs) {
         docs.should.length(5);
         done();
@@ -83,7 +83,7 @@ describe('eventr.js', function () {
     });
 
     it('should return [] when total < 1', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       var datas = [];
       et.on('doc', datas.length, function (docs) {
         docs.should.length(0);
@@ -92,7 +92,7 @@ describe('eventr.js', function () {
     });
 
     it('should ensure `emit` order', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       et.on('doc', 5, function (docs) {
         docs.should.eql([1, 4, 9, 16, 25]);
         done();
@@ -108,7 +108,7 @@ describe('eventr.js', function () {
 
     it('should ensure `done` order', function (done) {
       var datas = [1, 2, 3, 4, 5];
-      var et = new Eventr();
+      var et = new eventr();
       et.on('doc', datas.length, function (docs) {
         docs.should.eql(datas);
         done();
@@ -123,7 +123,7 @@ describe('eventr.js', function () {
 
     it('should ensure `done` order and trasform data', function (done) {
       var datas = [1, 2, 3, 4, 5];
-      var et = new Eventr();
+      var et = new eventr();
       et.on('doc', datas.length, function (docs) {
         docs.should.eql([1, 4, 9, 16, 25]);
         done();
@@ -142,7 +142,7 @@ describe('eventr.js', function () {
   describe('`emit`', function () {
 
     it('should work with one event', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       et.emit('hello', 'ok');
       et.on('hello', function (edata) {
         edata.should.equal('ok');
@@ -151,7 +151,7 @@ describe('eventr.js', function () {
     });
 
     it('should work with multi listeners', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
 
       fetchurl('1', function (err, content) {
         et.emit('page1', content);
@@ -173,7 +173,7 @@ describe('eventr.js', function () {
     });
 
     it('should work in sequence', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurl('file1', function (err, content) {
         et.emit('file1', content);
       });
@@ -195,7 +195,7 @@ describe('eventr.js', function () {
     });
 
     it('should support multi emit', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       var datas = [1, 2, 3, 4, 5];
       var count = 0;
       done = pedding(5, done);
@@ -213,7 +213,7 @@ describe('eventr.js', function () {
   describe('`emitNow`', function () {
 
     it('should omit `ok1` when emit prematurely', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       et.emitNow('hello', 'ok1');
       et.on('hello', function (edata) {
         edata.should.not.equal('ok1');
@@ -224,13 +224,13 @@ describe('eventr.js', function () {
     });
 
     it('should not throw error when no listener', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       et.emitNow('nonexist', 'gogo');
       done();
     });
 
     it('should support multi emitNow', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       var datas = [1, 2, 3, 4, 5];
       var count = 0;
       done = pedding(5, done);
@@ -246,7 +246,7 @@ describe('eventr.js', function () {
 
   describe('`done`', function () {
     it('should work with `done(fn)`', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurl('1', et.done(function (content) {
         et.emit('page1', content);
       }));
@@ -257,7 +257,7 @@ describe('eventr.js', function () {
     });
 
     it('should work with `done(eventName)`', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurl('1', et.done('page1'));
       et.on('page1', function (edata) {
         edata.should.equal('pagecontent1');
@@ -266,7 +266,7 @@ describe('eventr.js', function () {
     });
 
     it('should work with `done(eventName, thenFn)`', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurl('1', et.done('page1', function (data) {
         return data + 'then';
       }));
@@ -277,7 +277,7 @@ describe('eventr.js', function () {
     });
 
     it('should work with event array', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       et.err(done);
       fetchurl('google', et.done('page1'));
       fetchurl('yahoo', et.done('page2'));
@@ -289,7 +289,7 @@ describe('eventr.js', function () {
     });
 
     it('should support multi `done`', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       var datas = [1, 2, 3, 4, 5];
       var count = 0;
       done = pedding(5, done);
@@ -307,7 +307,7 @@ describe('eventr.js', function () {
   describe('`err`', function () {
     it('should `err(errHandler)`', function (done) {
       function errHandler(err) {}
-      var et = new Eventr();
+      var et = new eventr();
       et.err(errHandler);
       et._errFn.should.equal(errHandler);
       done();
@@ -318,7 +318,7 @@ describe('eventr.js', function () {
         err.should.Error;
         done();
       }
-      var et = new Eventr();
+      var et = new eventr();
       et.err(errHandler);
       fetchurlErr('google', function (err, content) {
         et.err(err);
@@ -330,13 +330,13 @@ describe('eventr.js', function () {
         err.should.Error;
         done();
       }
-      var et = new Eventr();
+      var et = new eventr();
       et.err(errHandler);
       fetchurlErr('google', et.done());
     });
 
     it('should nothing happens', function (done) {
-      var et = new Eventr();
+      var et = new eventr();
       fetchurlErr('google', et.done());
       // 上面那句不抛错就对了
       setTimeout(function () {
@@ -346,8 +346,8 @@ describe('eventr.js', function () {
   });
 
   it('quick example', function (done) {
-    var Eventr = require('../');
-    var et = new Eventr();
+    var eventr = require('../');
+    var et = new eventr();
     et.emit('google', '!');
     et.emit('bing', '?');
     et.on(['google', 'bing'], function (edata) {
