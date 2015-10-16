@@ -166,4 +166,3 @@ it('should work with event array', function (done) {
 ## TODO
 
 - [ ] browser UMD support
-- [ ] browser unit test
