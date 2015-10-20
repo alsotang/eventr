@@ -1,6 +1,6 @@
 {
   "name": "eventr",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A solution to async flow control",
   "main": "index.js",
   "scripts": {
