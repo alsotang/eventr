@@ -5,6 +5,7 @@
 **THIS PROJECT IS DEPRECATED, PLEASE USE co or async**
 
 co: https://github.com/tj/co
+
 async: https://github.com/caolan/async
 
 ## install
