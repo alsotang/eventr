@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.org/alsotang/eventr.svg?branch=master)](https://travis-ci.org/alsotang/eventr)
 
-**实现得太烂, 不推荐使用**
+**THIS PROJECT IS DEPRECATED, PLEASE USE co or async**
+
+co: https://github.com/tj/co
+async: https://github.com/caolan/async
 
 ## install
 
